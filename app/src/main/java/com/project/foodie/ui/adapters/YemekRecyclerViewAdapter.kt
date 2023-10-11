@@ -3,6 +3,7 @@ package com.project.foodie.ui.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.project.foodie.R
 import com.project.foodie.data.entity.Yemek
@@ -14,6 +15,9 @@ class YemekRecyclerViewAdapter(var yemekList: List<Yemek>, var mContext: Context
         RecyclerView.ViewHolder(view.root) {
         fun bind(yemek: Yemek) {
             with(view) {
+                root.setOnClickListener {
+                    Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_detailFragment)
+                }
                 nameTextView.text = yemek.yemekName
                 priceTextView.text = buildString {
                     append(yemek.yemekPrice.toString())

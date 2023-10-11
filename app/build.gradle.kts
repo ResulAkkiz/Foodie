@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation ("io.github.ShawnLin013:number-picker:2.4.13")
     implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
     implementation ("me.relex:circleindicator:2.1.6")
     implementation("androidx.core:core-ktx:1.9.0")
