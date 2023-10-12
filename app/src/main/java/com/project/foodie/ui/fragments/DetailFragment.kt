@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.project.foodie.databinding.FragmentDetailBinding
 
 class DetailFragment : Fragment() {
@@ -22,10 +23,10 @@ class DetailFragment : Fragment() {
             amount--
             if (amount < 1) amount = 1
             binding.amountTextView.text = amount.toString()
-            binding.totalPrice.text = buildString {
-                append(singlePrice * amount)
-                append(" ₺")
-            }
+            binding.totalPrice.text = calculateTotalPrice(singlePrice, amount)
+        }
+        binding.detailBackButton.setOnClickListener {
+            Navigation.findNavController(it).popBackStack()
         }
         binding.increaseButton.setOnClickListener {
             amount++

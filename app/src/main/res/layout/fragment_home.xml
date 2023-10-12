@@ -42,20 +42,20 @@
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/app_title_string"
                     android:textColor="@color/titleTextColor"
-                    android:textSize="24sp"></TextView>
+                    android:textSize="24sp" />
             </LinearLayout>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"></View>
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/searchImageView"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/round_search_24"
-                app:tint="@color/black"></ImageView>
+                app:tint="@color/black" />
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 

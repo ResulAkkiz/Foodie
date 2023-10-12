@@ -37,11 +37,9 @@ class BoardingFragment : Fragment() {
         val indicator = binding.circleIndicator
         indicator.setViewPager(viewPager)
 
-
-
         binding.nextButton.setOnClickListener {
 
-            if (currentItem < adapter.itemCount ) {
+            if (currentItem < adapter.itemCount-1) {
                 currentItem ++
                 viewPager.currentItem = currentItem
             }else{
