@@ -45,28 +45,15 @@
                     android:textSize="24sp" />
             </LinearLayout>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <ImageView
-                android:id="@+id/searchImageView"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/round_search_24"
-                app:tint="@color/black" />
+
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/row_banner1_im"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/yemeklerRecyclerView"
@@ -75,7 +62,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView4" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar2" />
 
 
 

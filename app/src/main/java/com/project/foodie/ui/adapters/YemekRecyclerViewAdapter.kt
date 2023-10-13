@@ -35,6 +35,11 @@ class YemekRecyclerViewAdapter(var yemekList: List<Yemek>, var mContext: Context
 
     override fun getItemCount(): Int = yemekList.size
 
+    fun setFilteredList(yemekList:List<Yemek>){
+        this.yemekList=yemekList
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: YemekViewHolder, position: Int) {
         val currentYemek = yemekList[position]
         holder.bind(currentYemek)
