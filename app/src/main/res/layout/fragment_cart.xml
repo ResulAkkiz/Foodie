@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@drawable/background_im"
     tools:context=".ui.fragments.CartFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:background="@android:color/white"
+        android:background="@android:color/transparent"
         android:id="@+id/materialToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/white"
+        android:backgroundTint="@android:color/transparent"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:contentInsetEnd="8dp"
@@ -25,7 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:background="@android:color/transparent"
             android:gravity="center">
 
 

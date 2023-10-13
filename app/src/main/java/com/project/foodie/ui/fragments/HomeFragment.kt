@@ -32,11 +32,11 @@ class HomeFragment : Fragment() {
         binding.yemeklerRecyclerView.layoutManager =
             GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
         yemekListesi = listOf(
-            Yemek(1, "Pizza", "pizza.jpg", 15.99),
-            Yemek(2, "Hamburger", "hamburger.jpg", 8.99),
-            Yemek(3, "Pasta", "pasta.jpg", 12.49),
-            Yemek(4, "Çorba", "corba.jpg", 5.99),
-            Yemek(5, "Salata", "salata.jpg", 7.49)
+            Yemek(1, "Pizza", "pizza.jpg", 15),
+            Yemek(2, "Hamburger", "hamburger.jpg", 8),
+            Yemek(3, "Pasta", "pasta.jpg", 19),
+            Yemek(4, "Çorba", "corba.jpg", 55),
+            Yemek(5, "Salata", "salata.jpg", 12)
         )
         adapter = YemekRecyclerViewAdapter(yemekListesi, requireContext())
         binding.yemeklerRecyclerView.adapter = adapter

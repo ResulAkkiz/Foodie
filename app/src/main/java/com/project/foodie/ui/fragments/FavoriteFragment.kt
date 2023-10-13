@@ -24,8 +24,8 @@ class FavoriteFragment : Fragment() {
         val view = binding.root
         binding.favoriteRecyclerView.layoutManager=LinearLayoutManager(requireContext())
         val yemekListesi = arrayListOf(
-            Yemek(1, "Pizza", "pizza.jpg", 15.99),
-            Yemek(2, "Hamburger", "hamburger.jpg", 8.99),
+            Yemek(1, "Pizza", "pizza.jpg", 15),
+            Yemek(2, "Hamburger", "hamburger.jpg", 24),
 
         )
         binding.favoriteRecyclerView.adapter=

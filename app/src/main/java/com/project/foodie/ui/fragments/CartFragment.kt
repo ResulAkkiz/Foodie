@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ import com.project.foodie.ui.adapters.CartRecyclerViewAdapter
 class CartFragment : Fragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
+    var totalPrice=0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,25 +41,30 @@ class CartFragment : Fragment() {
             Sepet(1, "Pizza", "resim1.jpg", 30, 1, "Kullanıcı1"),
             Sepet(2, "Hamburger", "resim2.jpg", 25, 3, "Kullanıcı2"),
 
-        )
+            )
         var adapter = CartRecyclerViewAdapter(sepetListesi, requireContext()) { totalPrice ->
-            binding.totalPriceFabButton.text = buildString {
-                append(totalPrice)
-                append(" ₺")
+            this.totalPrice = totalPrice
+            if (totalPrice == 0) {
+                binding.totalPriceFabButton.visibility = View.GONE
+            } else {
+                binding.totalPriceFabButton.visibility = View.VISIBLE
+                binding.totalPriceFabButton.text = buildString {
+                    append(totalPrice)
+                    append(" ₺")
+                }
+            }
+
+            binding.totalPriceFabButton.setOnClickListener {
+
+                showConfirmDialogBox()
             }
 
         }
-
-        binding.totalPriceFabButton.setOnClickListener {
-            showConfirmDialogBox()
-        }
-
         binding.cartRecyclerView.adapter = adapter
 
-
         return view
-    }
 
+    }
     private fun showConfirmDialogBox() {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -84,13 +91,16 @@ class CartFragment : Fragment() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         val view =
-            CartSuccessfulDialogBinding.inflate(LayoutInflater.from(requireContext()), null, false)
-        Glide.with(this).load(R.drawable.order_successful_im).into(view.orderSuccessfulImageView)
+            CartSuccessfulDialogBinding.inflate(
+                LayoutInflater.from(requireContext()),
+                null,
+                false
+            )
+        Glide.with(this).load(R.drawable.order_successful_im)
+            .into(view.orderSuccessfulImageView)
         dialog.setContentView(view.root)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         dialog.show()
     }
-
-
 }

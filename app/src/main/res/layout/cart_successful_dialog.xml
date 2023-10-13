@@ -23,7 +23,7 @@
             android:textAlignment="center"
             android:fontFamily="@font/montserrat_semibold"
             android:textColor="@color/black"
-            android:text="Siparişiniz onaylandı, yola çıkamayı bekliyor!"
+            android:text="Siparişiniz onaylandı, yola çıkmayı bekliyor!"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
