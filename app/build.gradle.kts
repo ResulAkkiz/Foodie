@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation ("io.github.ShawnLin013:number-picker:2.4.13")
     implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
     implementation ("me.relex:circleindicator:2.1.6")

@@ -5,7 +5,7 @@
         android:title="Home"
         android:icon="@drawable/house_ic"/>
     <item
-        android:id="@+id/favorite"
+        android:id="@+id/favoriteFragment"
         android:title="Favori"
         android:icon="@drawable/heart_ic"/>
 

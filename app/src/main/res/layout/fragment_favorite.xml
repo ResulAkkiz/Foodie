@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".ui.fragments.CartFragment">
+    tools:context=".ui.fragments.FavoriteFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:background="@android:color/white"
@@ -28,8 +28,6 @@
             android:background="@android:color/white"
             android:gravity="center">
 
-
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -46,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_semibold"
-                    android:text="Foodie Cart"
+                    android:text="Foodie Favorite"
                     android:textColor="@color/titleTextColor"
                     android:textSize="24sp" />
             </LinearLayout>
@@ -55,39 +53,18 @@
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favoriteRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipToPadding="true"
+        android:paddingBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbar" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:paddingBottom="100dp"
-            android:clipToPadding="true"
-            android:id="@+id/cartRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-       android:id="@+id/totalPriceFabButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/primaryColor"
-        android:text="125 ₺"
-        app:icon="@drawable/outline_shopping_cart_24"
-        app:iconTint="@color/white"
-        app:iconSize="35dp"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:fontFamily="@font/montserrat_bold"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 
 
