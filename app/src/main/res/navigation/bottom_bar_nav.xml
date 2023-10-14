@@ -23,7 +23,11 @@
         android:id="@+id/detailFragment"
         android:name="com.project.foodie.ui.fragments.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="yemekArg"
+            app:argType="com.project.foodie.data.entity.Yemek" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.project.foodie.ui.fragments.FavoriteFragment"

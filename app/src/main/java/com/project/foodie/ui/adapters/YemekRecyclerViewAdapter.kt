@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.project.foodie.R
 import com.project.foodie.data.entity.Yemek
 import com.project.foodie.databinding.YemeklerSingleItemBinding
+import com.project.foodie.ui.fragments.HomeFragmentDirections
 import com.project.foodie.utils.Constants
 import com.project.foodie.utils.getImage
 import com.project.foodie.utils.getLocation
@@ -21,7 +22,8 @@ class YemekRecyclerViewAdapter(var yemekList: List<Yemek>, var mContext: Context
         fun bind(yemek: Yemek) {
             with(view) {
                 root.setOnClickListener {
-                    Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_detailFragment)
+                    val direction=HomeFragmentDirections.actionHomeFragmentToDetailFragment(yemek)
+                    Navigation.findNavController(it).navigate(direction)
                 }
                 nameTextView.text = yemek.yemekName
                 priceTextView.text = buildString {

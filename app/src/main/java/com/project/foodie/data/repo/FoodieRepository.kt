@@ -4,7 +4,7 @@ import com.project.foodie.data.datasource.FoodieDataSource
 
 class FoodieRepository(var foodieDataSource: FoodieDataSource) {
 
-    suspend fun insertContact(
+    suspend fun insertCart(
         yemekName: String,
         yemekPict: String,
         yemekPrice: Int,

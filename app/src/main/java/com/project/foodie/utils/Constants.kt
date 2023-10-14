@@ -35,7 +35,7 @@ class Constants {
             "Tiramisu" to "Büyükçekmece"
         )
 
-        val foodDescriptionMap = mapOf(
+        val descriptionMap = mapOf(
             "Ayran" to "Doğal ve ferahlatıcı bir içecek. Serinletici aroması ve taptaze malzemelerle sofralarınıza lezzet katıyor. Her yemeğin yanında keyifle tercih edebileceğiniz sağlıklı bir içecek alternatifi.",
             "Baklava" to "Geleneksel lezzetlerin en tatlısı. Şerbetiyle kendinizi bulutların üzerinde hissedeceğiniz nefis bir Türk tatlısı. İncecik hamuru ve içerisindeki cevizlerle damaklarınızda unutulmaz bir lezzet bırakacak.",
             "Fanta" to "Bol kabarcıklı ve canlandırıcı bir içecek. Taze ve doğal meyve aromalarıyla gününüzü renklendirmeye hazır olun. Ferahlatıcı tadıyla kendinizi enerjik hissetmenizi sağlayacak, en sevilen gazlı içeceklerden biri.",
