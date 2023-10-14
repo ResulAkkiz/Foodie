@@ -1,3 +1,10 @@
 package com.project.foodie.data.entity
 
-data class Yemek(var yemekId:Int,var yemekName:String,var yemekPict:String,var yemekPrice:Int)
+import com.google.gson.annotations.SerializedName
+
+data class Yemek(
+    @SerializedName("yemek_id") var yemekId: Int,
+    @SerializedName("yemek_adi") var yemekName: String,
+    @SerializedName("yemek_resim_adi") var yemekPict: String,
+    @SerializedName("yemek_fiyat") var yemekPrice: Int,
+)

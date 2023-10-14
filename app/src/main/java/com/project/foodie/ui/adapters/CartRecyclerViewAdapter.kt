@@ -20,9 +20,9 @@ class CartRecyclerViewAdapter(var cartList: ArrayList<Sepet>, var mContext: Cont
             with(view) {
 
                 orderImageView.setImageResource(R.drawable.pizza_sample_im)
-                var singleOrderTotalPrice=cartItem.sepetYemekPrice * cartItem.sepetYemekAmount
+                var singleOrderTotalPrice=cartItem.sepetYemekPrice * cartItem.sepetYemekOrderAmount
                 totalPrice += singleOrderTotalPrice
-                var amount = cartItem.sepetYemekAmount
+                var amount = cartItem.sepetYemekOrderAmount
                 orderAmountTextView.text = amount.toString()
                 orderNameTextView.text = cartItem.sepetYemekName
                 orderTotalPrice.text = buildString {
@@ -46,7 +46,7 @@ class CartRecyclerViewAdapter(var cartList: ArrayList<Sepet>, var mContext: Cont
                             append(singleOrderTotalPrice)
                             append(" ₺")
                         }
-                        cartItem.sepetYemekAmount = amount
+                        cartItem.sepetYemekOrderAmount = amount
                         updateTotalPrice()
 
 
@@ -61,7 +61,7 @@ class CartRecyclerViewAdapter(var cartList: ArrayList<Sepet>, var mContext: Cont
                     orderTotalPrice.text = buildString { append(singleOrderTotalPrice)
                         append(" ₺")
                     }
-                    cartItem.sepetYemekAmount = amount
+                    cartItem.sepetYemekOrderAmount = amount
 
                     updateTotalPrice()
 
@@ -82,14 +82,14 @@ class CartRecyclerViewAdapter(var cartList: ArrayList<Sepet>, var mContext: Cont
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         val currentCartItem = cartList[position]
-        println(currentCartItem.sepetYemekAmount)
+        println(currentCartItem.sepetYemekOrderAmount)
         holder.bind(currentCartItem)
     }
 
     private fun updateTotalPrice() {
         var totalPrice = 0
         for (item in cartList) {
-            totalPrice += item.sepetYemekPrice * item.sepetYemekAmount
+            totalPrice += item.sepetYemekPrice * item.sepetYemekOrderAmount
         }
         totalPriceListener(totalPrice)
     }

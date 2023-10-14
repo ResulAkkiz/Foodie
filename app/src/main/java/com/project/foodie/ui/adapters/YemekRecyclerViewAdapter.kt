@@ -5,9 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.project.foodie.R
 import com.project.foodie.data.entity.Yemek
 import com.project.foodie.databinding.YemeklerSingleItemBinding
+import com.project.foodie.utils.Constants
+import com.project.foodie.utils.getImage
+import com.project.foodie.utils.getLocation
+import com.project.foodie.utils.getStar
 
 class YemekRecyclerViewAdapter(var yemekList: List<Yemek>, var mContext: Context) :
     RecyclerView.Adapter<YemekRecyclerViewAdapter.YemekViewHolder>() {
@@ -23,7 +28,10 @@ class YemekRecyclerViewAdapter(var yemekList: List<Yemek>, var mContext: Context
                     append(yemek.yemekPrice.toString())
                     append(" ₺")
                 }
-                yemekImageView.setImageResource(R.drawable.pizza_sample_im)
+                starTextView.text=yemek.yemekName.getStar()
+                locationTextView.text=yemek.yemekName.getLocation()
+                Glide.with(mContext).load(yemek.yemekPict.getImage()).into(yemekImageView);
+
             }
         }
     }

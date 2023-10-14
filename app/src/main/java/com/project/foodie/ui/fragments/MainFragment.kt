@@ -11,8 +11,10 @@ import androidx.navigation.fragment.findNavController
 import com.project.foodie.R
 import com.project.foodie.databinding.FragmentMainBinding
 import com.project.foodie.databinding.FragmentSignupBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null

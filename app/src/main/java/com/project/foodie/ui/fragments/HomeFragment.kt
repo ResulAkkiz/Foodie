@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Orientation
 import com.project.foodie.R
@@ -15,14 +16,25 @@ import com.project.foodie.data.entity.Yemek
 import com.project.foodie.databinding.FragmentHomeBinding
 import com.project.foodie.databinding.FragmentLoginBinding
 import com.project.foodie.ui.adapters.YemekRecyclerViewAdapter
+import com.project.foodie.ui.viewmodels.HomeFragmentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     var yemekListesi = listOf<Yemek>()
     lateinit var adapter: YemekRecyclerViewAdapter
+    private lateinit var viewModel: HomeFragmentViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val tempViewModel: HomeFragmentViewModel by viewModels()
+        viewModel = tempViewModel
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -31,15 +43,13 @@ class HomeFragment : Fragment() {
         val view = binding.root
         binding.yemeklerRecyclerView.layoutManager =
             GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
-        yemekListesi = listOf(
-            Yemek(1, "Pizza", "pizza.jpg", 15),
-            Yemek(2, "Hamburger", "hamburger.jpg", 8),
-            Yemek(3, "Pasta", "pasta.jpg", 19),
-            Yemek(4, "Çorba", "corba.jpg", 55),
-            Yemek(5, "Salata", "salata.jpg", 12)
-        )
-        adapter = YemekRecyclerViewAdapter(yemekListesi, requireContext())
-        binding.yemeklerRecyclerView.adapter = adapter
+        viewModel.yemekList.observe(viewLifecycleOwner) {yemekList->
+            yemekListesi=yemekList
+
+            adapter = YemekRecyclerViewAdapter(yemekList, requireContext())
+            binding.yemeklerRecyclerView.adapter = adapter
+        }
+
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
