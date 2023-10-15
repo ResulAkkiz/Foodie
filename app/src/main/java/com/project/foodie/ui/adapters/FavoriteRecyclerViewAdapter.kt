@@ -1,15 +1,21 @@
 package com.project.foodie.ui.adapters
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.Window
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.project.foodie.R
 import com.project.foodie.data.entity.Sepet
 import com.project.foodie.data.entity.Yemek
+import com.project.foodie.databinding.CartAlertDialogBinding
 import com.project.foodie.databinding.CartSingleItemBinding
+import com.project.foodie.databinding.DeleteConfirmDialogBinding
 import com.project.foodie.databinding.FavoriteSingleItemBinding
 
 class FavoriteRecyclerViewAdapter(var favoriteList: ArrayList<Yemek>, var mContext: Context) :
@@ -26,8 +32,10 @@ class FavoriteRecyclerViewAdapter(var favoriteList: ArrayList<Yemek>, var mConte
                 }
                 favoriteImageView.setImageResource(R.drawable.pizza_sample_im)
                 favoriteDeleteButton.setOnClickListener {
+                    showDeleteConfirmDialogBox()
                     favoriteList.removeAt(position)
                     notifyItemRemoved(position)
+
                 }
 
             }
@@ -45,6 +53,25 @@ class FavoriteRecyclerViewAdapter(var favoriteList: ArrayList<Yemek>, var mConte
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
         val currentFavorite = favoriteList[position]
         holder.bind(currentFavorite)
+    }
+
+    private fun showDeleteConfirmDialogBox() {
+        val dialog = Dialog(mContext)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        val view =
+            DeleteConfirmDialogBinding.inflate(LayoutInflater.from(mContext), null, false)
+        dialog.setContentView(view.root)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        view.positiveButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        view.negativeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
 

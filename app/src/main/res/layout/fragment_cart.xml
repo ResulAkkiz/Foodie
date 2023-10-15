@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/primaryColor"
-        android:text="125 ₺"
+        android:text="0 ₺"
         app:icon="@drawable/outline_shopping_cart_24"
         app:iconTint="@color/white"
         app:iconSize="35dp"

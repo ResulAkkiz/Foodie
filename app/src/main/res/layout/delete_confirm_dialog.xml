@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/infoDescription"
             android:textSize="24sp"
             android:textAlignment="center"
             android:fontFamily="@font/montserrat_semibold"
@@ -25,8 +26,8 @@
 
         <ImageView
             android:src="@drawable/outline_info_24"
-            android:layout_width="125dp"
-            android:layout_height="125dp" />
+            android:layout_width="75dp"
+            android:layout_height="75dp" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
