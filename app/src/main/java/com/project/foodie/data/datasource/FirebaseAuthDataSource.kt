@@ -20,40 +20,30 @@ class FirebaseAuthDataSource(private val firebaseAuthInstance: FirebaseAuth) :
         var error = ""
     }
 
-    override suspend fun createNewUser(
+    override suspend fun createUserWithEmailAndPassword(
         email: String,
         password: String,
-        onError: (String) -> Unit,
-    ): FirebaseUser? =
+    ): FirebaseAuthResult? =
         withContext(Dispatchers.IO) {
             return@withContext try {
-
-                val authResult =
-                    firebaseAuthInstance.createUserWithEmailAndPassword(email, password).await()
-                authResult.user
+                val authResult = firebaseAuthInstance.createUserWithEmailAndPassword(email, password).await()
+                authResult.user?.let { FirebaseAuthResult.Success(it) }
             } catch (e: FirebaseAuthException) {
-                when (e.errorCode) {
-                    "ERROR_EMAIL_ALREADY_IN_USE" -> {
+                val error = when (e.errorCode) {
 
-                        error = "Bu e-posta adresi zaten kullanımda."
-                        println("Bu e-posta adresi zaten kullanımda.")
-                    }
-
-                    "ERROR_WEAK_PASSWORD" -> {
-
-                        error = "Zayıf şifre kullanıldı. Şifre en az 6 karakterden oluşmalıdır."
-                        println("Zayıf şifre kullanıldı. Şifre en az 6 karakterden oluşmalıdır.")
-                    }
-
-                    else -> error = e.localizedMessage?.toString() ?: "Bir hata oluştu"
+                    "ERROR_EMAIL_ALREADY_IN_USE" -> "Bu e-posta adresi zaten kullanımda."
+                    "ERROR_WEAK_PASSWORD" -> "Zayıf şifre kullanıldı. Şifre en az 6 karakterden oluşmalıdır."
+                    else -> "Bir hata oluştu: ${e.localizedMessage}"
                 }
-                onError(error)
-                null
-            } catch (e: Exception) {
-                error = e.localizedMessage.toString()
+                FirebaseAuthResult.Failure(error)
+            } catch (e: FirebaseAuthInvalidCredentialsException) {
+                val error = e.localizedMessage ?: "Bir hata oluştu."
 
-                onError(error)
-                null
+                FirebaseAuthResult.Failure(error)
+            } catch (e: Exception) {
+                val error = e.localizedMessage ?: "Bir hata oluştu."
+
+                FirebaseAuthResult.Failure(error)
             }
         }
 

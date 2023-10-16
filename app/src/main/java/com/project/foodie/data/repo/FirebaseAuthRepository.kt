@@ -5,19 +5,16 @@ import com.project.foodie.data.datasource.FirebaseAuthDataSource
 
 class FirebaseAuthRepository(private val firebaseAuthDataSource: FirebaseAuthDataSource) {
 
-    suspend fun createNewUser(
+    suspend fun createUserWithEmailAndPassword(
         email: String,
         password: String,
-        onError: (String) -> Unit,
-    ): FirebaseUser? {
-        return firebaseAuthDataSource.createNewUser(email, password, onError)
-    }
+    ) = firebaseAuthDataSource.createUserWithEmailAndPassword(email, password)
 
 
     suspend fun signInWithEmailAndPassword(
         email: String,
         password: String,
-    ) = firebaseAuthDataSource.signInWithEmailAndPassword(email, password, )
+    ) = firebaseAuthDataSource.signInWithEmailAndPassword(email, password)
 
     suspend fun signOut() = firebaseAuthDataSource.signOut()
 

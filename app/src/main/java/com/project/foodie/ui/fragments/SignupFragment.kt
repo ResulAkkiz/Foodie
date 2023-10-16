@@ -5,17 +5,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.project.foodie.R
 import com.project.foodie.databinding.FragmentErrorBottomSheetBinding
 import com.project.foodie.databinding.FragmentLoginBinding
 import com.project.foodie.databinding.FragmentSignupBinding
+import com.project.foodie.ui.viewmodels.SignupFragmentViewModel
+import com.project.foodie.ui.viewmodels.SplashFragmentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignupFragment : Fragment() {
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var viewModel: SignupFragmentViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val tempViewModel: SignupFragmentViewModel by viewModels()
+        viewModel = tempViewModel
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,39 +37,68 @@ class SignupFragment : Fragment() {
         val view = binding.root
         binding.signupButton.setOnClickListener {
             checkValidation(R.drawable.outline_info_24, "Lütfen gerekli alanları doldurunuz") {
-                println("Signup Process")
+                with(binding){
+                    viewModel.createNewUser(
+                        signupEmailEditText.text.toString().trim(),
+                        signupPasswordEditText.text.toString().trim()
+                    )
+                }
+
             }
         }
         binding.loginButton.setOnClickListener {
             Navigation.findNavController(it).popBackStack()
         }
+        viewModel.firebaseUser.observe(viewLifecycleOwner) { firebaseUser ->
+            if (firebaseUser != null) {
+                Navigation.findNavController(requireView())
+                    .navigate(SignupFragmentDirections.actionSignupFragmentToMainFragment())
+            }
+        }
+
+        viewModel.exception.observe(viewLifecycleOwner) { error ->
+            showBottomSheetDialog(R.drawable.outline_info_24, error.toString())
+        }
         return view
     }
 
     private fun checkValidation(resInt: Int, info: String, onSuccessful: () -> Unit) {
-        if (binding.signupEmailEditText.text.isNullOrBlank() || binding.signupPasswordEditText.text.isNullOrBlank() || binding.signupPasswordConfirmEditText.text.isNullOrBlank()) {
-
-            val dialog = BottomSheetDialog(requireContext())
-            val bottomSheetBinding = FragmentErrorBottomSheetBinding.inflate(
-                LayoutInflater.from(requireContext()),
-                null,
-                false
-            )
-            with(binding){
-                if ( signupEmailEditText.text.isNullOrBlank()) signupEmailEditText.error = "E-mail boş bırakılamaz."
-                if ( signupPasswordEditText.text.isNullOrBlank()) signupPasswordEditText.error = "Şifre boş bırakılamaz."
-                if ( signupPasswordConfirmEditText.text.isNullOrBlank()) signupPasswordConfirmEditText.error = "Şifre Onaylama boş bırakılamaz."
+        with(binding){
+            if (signupEmailEditText.text.isNullOrBlank() || signupPasswordEditText.text.isNullOrBlank() ||signupPasswordConfirmEditText.text.isNullOrBlank()) {
+                showBottomSheetDialog(resInt, info)
+                with(binding) {
+                    if (signupEmailEditText.text.isNullOrBlank()) signupEmailEditText.error =
+                        "E-mail boş bırakılamaz."
+                    if (signupPasswordEditText.text.isNullOrBlank()) signupPasswordEditText.error =
+                        "Şifre boş bırakılamaz."
+                    if (signupPasswordConfirmEditText.text.isNullOrBlank()) signupPasswordConfirmEditText.error =
+                        "Şifre Onaylama boş bırakılamaz."
+                }
+            } else {
+                if (signupPasswordEditText.text.trim() != signupPasswordConfirmEditText.text.trim()){
+                    showBottomSheetDialog(resInt, "Şifreler eşleşmiyor. Lütfen aynı şifreyi girin.")
+                }else{
+                    onSuccessful()
+                }
             }
-            bottomSheetBinding.errorImage.setImageResource(resInt)
-            bottomSheetBinding.errorDescription.text = info
-            dialog.setCancelable(true)
-            dialog.setContentView(bottomSheetBinding.root)
-            dialog.show()
-        } else {
-            onSuccessful()
-
         }
 
+
+    }
+
+    private fun showBottomSheetDialog(resInt: Int, info: String) {
+        val dialog = BottomSheetDialog(requireContext())
+        val bottomSheetBinding = FragmentErrorBottomSheetBinding.inflate(
+            LayoutInflater.from(requireContext()),
+            null,
+            false
+        )
+
+        bottomSheetBinding.errorImage.setImageResource(resInt)
+        bottomSheetBinding.errorDescription.text = info
+        dialog.setCancelable(true)
+        dialog.setContentView(bottomSheetBinding.root)
+        dialog.show()
     }
 
 

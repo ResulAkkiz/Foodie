@@ -10,9 +10,9 @@ interface FirebaseAuthInterface {
     suspend fun signOut(): Boolean
 
     suspend fun currentUser(): FirebaseUser?
-    suspend fun createNewUser(
+    suspend fun createUserWithEmailAndPassword(
         email: String,
         password: String,
-        onError: (String) -> Unit
-    ): FirebaseUser?
+
+        ): FirebaseAuthResult?
 }
