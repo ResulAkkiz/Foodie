@@ -43,11 +43,13 @@ class HomeFragment : Fragment() {
         val view = binding.root
         binding.yemeklerRecyclerView.layoutManager =
             GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
+
+        binding.progressBar2.visibility=View.VISIBLE
         viewModel.yemekList.observe(viewLifecycleOwner) {yemekList->
             yemekListesi=yemekList
-
             adapter = YemekRecyclerViewAdapter(yemekList, requireContext())
             binding.yemeklerRecyclerView.adapter = adapter
+            binding.progressBar2.visibility=View.GONE
         }
 
 

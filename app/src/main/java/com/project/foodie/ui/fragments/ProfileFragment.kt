@@ -41,7 +41,8 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-
+        binding.scrollView2.visibility=View.GONE
+        binding.progressBar3.visibility=View.VISIBLE
 
         binding.profileUpdateButton.setOnClickListener {
             Log.e("TAG", "set onclick listener")
@@ -104,6 +105,8 @@ class ProfileFragment : Fragment() {
                 }
 
             }
+            binding.scrollView2.visibility=View.VISIBLE
+            binding.progressBar3.visibility=View.GONE
 
 
         }

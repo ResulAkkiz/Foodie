@@ -35,6 +35,7 @@ class FavoriteFragment : Fragment() {
         super.onCreate(savedInstanceState)
         val tempViewModel: FavoriteFragmentViewModel by viewModels()
         viewModel = tempViewModel
+
     }
 
     override fun onResume() {
@@ -47,8 +48,10 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+
         val view = binding.root
         binding.favoriteRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.progressBar.visibility=View.VISIBLE
         viewModel.resultGetFavorites.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is FirebaseFirestoreResult.Success<*> -> {
@@ -58,19 +61,19 @@ class FavoriteFragment : Fragment() {
                         binding.favoriteRecyclerView.adapter =
                             FavoriteRecyclerViewAdapter(filteredList, requireContext(),viewModel)
                     }
-
+                    binding.progressBar.visibility = View.GONE
                 }
 
                 is FirebaseFirestoreResult.Failure -> {
                     Log.e("Hata:", result.error)
+
+                    binding.progressBar.visibility = View.GONE
                 }
             }
 
 
         }
-
+//        binding.progressBar.visibility=View.GONE
         return view
     }
-
-
 }
