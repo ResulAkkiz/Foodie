@@ -22,13 +22,9 @@ class ProfileFragmentViewModel @Inject constructor(
     private val firebaseFirestoreRepository: FirebaseFirestoreRepository,
 ) :
     ViewModel() {
+    val getUserResult = MutableLiveData<FirebaseFirestoreResult>()
     val updateResult = MutableLiveData<FirebaseFirestoreResult>()
 
-
-    init {
-        getUser()
-        Log.e("TAG", "init")
-    }
 
 
     fun getUser() {
@@ -37,19 +33,8 @@ class ProfileFragmentViewModel @Inject constructor(
             if (currentUser != null) {
                 val result = firebaseFirestoreRepository.getUserById(currentUser.uid)
 
-                updateResult.value=result
-//                when (result) {
-//                    is FirebaseFirestoreResult.Success<*> -> {
-//                        if (result.data is User)
-//                            user.value = result.data
-//                    }
-//
-//                    is FirebaseFirestoreResult.Failure -> {
-//                        exception.value = result.error
-//                    }
-//
-//
-//                }
+                getUserResult.value=result
+
             }
         }
     }

@@ -1,15 +1,20 @@
 package com.project.foodie.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
+import com.project.foodie.R
 import com.project.foodie.databinding.FragmentDetailBinding
+import com.project.foodie.firebase.FirebaseFirestoreResult
 import com.project.foodie.ui.viewmodels.DetailFragmentViewModel
 import com.project.foodie.ui.viewmodels.HomeFragmentViewModel
 import com.project.foodie.utils.getDescription
@@ -25,6 +30,7 @@ class DetailFragment : Fragment() {
     private var amount: Int = 1
     private var singlePrice = 0
     private lateinit var viewModel: DetailFragmentViewModel
+    private var isFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +47,26 @@ class DetailFragment : Fragment() {
         val bundle: DetailFragmentArgs by navArgs()
         val yemekValue = bundle.yemekArg
         initFragment(yemekValue.yemekPrice)
+        viewModel.checkFavorited(yemekValue.yemekId)
+        viewModel.isFavorite.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is FirebaseFirestoreResult.Success<*> -> {
+                    if (result.data is Boolean) {
+                        isFavorite = result.data
+                        if (isFavorite){
+                            binding.detailFavoriteButton.setImageResource(R.drawable.baseline_favorite_24)
+                        }else{
+                            binding.detailFavoriteButton.setImageResource(R.drawable.baseline_favorite_border_24)
+                        }
+                    }
+                }
+
+                is FirebaseFirestoreResult.Failure -> {
+                    Log.e("TAG", "Hata meydana geldi")
+                }
+            }
+
+        }
 
         with(binding) {
             detailLocationTextView.text = yemekValue.yemekName.getLocation()
@@ -81,6 +107,15 @@ class DetailFragment : Fragment() {
                     userName = "Resul"
                 )
             }
+        }
+
+        binding.detailFavoriteButton.setOnClickListener {
+            if (!isFavorite){
+                viewModel.insertFavorite(yemekValue)
+            }else{
+                viewModel.deleteFavorite(yemekValue.yemekId)
+            }
+
         }
 
 

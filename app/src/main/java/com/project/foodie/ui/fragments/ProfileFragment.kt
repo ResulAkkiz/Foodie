@@ -43,12 +43,10 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
 
-
         binding.profileUpdateButton.setOnClickListener {
             Log.e("TAG", "set onclick listener")
             checkValidation(R.drawable.outline_info_24, "Lütfen gerekli yerleri doldurunuz.") {
                 if (user != null) {
-
                     viewModel.updateUser(
                         user!!.userId,
                         hashMapOf(
@@ -61,33 +59,41 @@ class ProfileFragment : Fragment() {
                     )
                 }
             }
-        }
 
-        viewModel.updateResult.observe(viewLifecycleOwner) { result ->
-
-            Log.e("TAG", result.toString())
-            when (result) {
-
-                is FirebaseFirestoreResult.Success<*> -> {
-                    when (result.data) {
-                        is Boolean -> {
-                            showBottomSheetDialog(
-                                R.drawable.baseline_check_circle_outline_24,
-                                "Güncelleme işlemi başarıyla gerçekleşti."
-                            )
-                        }
-
-                        is User -> {
-                            user = result.data
-                            with(binding) {
-                                profileAdressEditText.setText(user?.userAddress)
-                                profileNameEditText.setText(user?.userName)
-                                profileSurnameEditText.setText(user?.userSurname)
-                                profilePhoneNumberEditText.setText(user?.userPhoneNumber)
-                            }
-                        }
+            viewModel.updateResult.observe(viewLifecycleOwner) { result ->
+                Log.e("TAG", result.toString())
+                when (result) {
+                    is FirebaseFirestoreResult.Success<*> -> {
+                        showBottomSheetDialog(
+                            R.drawable.baseline_check_circle_outline_24,
+                            "Güncelleme işlemi başarıyla gerçekleşti."
+                        )
                     }
 
+                    is FirebaseFirestoreResult.Failure -> {
+                        showBottomSheetDialog(
+                            R.drawable.outline_info_24,
+                            "Bir hata meydana geldi: ${result.error}"
+                        )
+                    }
+                }
+            }
+        }
+
+
+
+        viewModel.getUserResult.observe(viewLifecycleOwner) { result ->
+            Log.e("TAG", "$result getUserResult")
+            when (result) {
+                is FirebaseFirestoreResult.Success<*> -> {
+                    if (result.data is User)
+                        user = result.data
+                    with(binding) {
+                        profileAdressEditText.setText(user?.userAddress)
+                        profileNameEditText.setText(user?.userName)
+                        profileSurnameEditText.setText(user?.userSurname)
+                        profilePhoneNumberEditText.setText(user?.userPhoneNumber)
+                    }
                 }
 
                 is FirebaseFirestoreResult.Failure -> {
@@ -102,8 +108,10 @@ class ProfileFragment : Fragment() {
 
         }
 
+
         return binding.root
     }
+
 
     private fun checkValidation(resInt: Int, info: String, onSuccessful: () -> Unit) {
         if (binding.profileAdressEditText.text.isNullOrBlank() || binding.profileNameEditText.text.isNullOrBlank() || binding.profileSurnameEditText.text.isNullOrBlank() || binding.profilePhoneNumberEditText.text.isNullOrBlank()) {

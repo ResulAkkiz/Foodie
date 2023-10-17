@@ -37,25 +37,25 @@ class SplashFragment : Fragment() {
     ): View? {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
         val view = binding.root
-//        viewModel.currentUser()
-//
-//        viewModel.firebaseUser.observe(viewLifecycleOwner) { firebaseUser ->
-//
-//            Handler(Looper.getMainLooper()).postDelayed({
-//                if (firebaseUser != null) {
-//                    Navigation.findNavController(requireView())
-//                        .navigate(SplashFragmentDirections.actionSplashFragmentToMainFragment())
-//                } else {
-//                    Navigation.findNavController(requireView())
-//                        .navigate(SplashFragmentDirections.actionSplashFragmentToBoardingFragment())
-//                }
-//
-//            }, 3000)
-//        }
+        viewModel.currentUser()
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            findNavController().navigate(R.id.action_splashFragment_to_boardingFragment)
-        }, 250)
+        viewModel.firebaseUser.observe(viewLifecycleOwner) { firebaseUser ->
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (firebaseUser != null) {
+                    Navigation.findNavController(requireView())
+                        .navigate(SplashFragmentDirections.actionSplashFragmentToMainFragment())
+                } else {
+                    Navigation.findNavController(requireView())
+                        .navigate(SplashFragmentDirections.actionSplashFragmentToBoardingFragment())
+                }
+
+            }, 1000)
+        }
+
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            findNavController().navigate(R.id.action_splashFragment_to_boardingFragment)
+//        }, 250)
         return view
     }
 }
