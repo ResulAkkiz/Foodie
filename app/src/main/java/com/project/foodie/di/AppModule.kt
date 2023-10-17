@@ -1,9 +1,12 @@
 package com.project.foodie.di
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.project.foodie.data.datasource.FirebaseAuthDataSource
+import com.project.foodie.data.datasource.FirebaseFirestoreDataSource
 import com.project.foodie.data.datasource.FoodieDataSource
 import com.project.foodie.data.repo.FirebaseAuthRepository
+import com.project.foodie.data.repo.FirebaseFirestoreRepository
 import com.project.foodie.data.repo.FoodieRepository
 import com.project.foodie.retrofit.ApiUtils
 import com.project.foodie.retrofit.FoodieDao
@@ -34,7 +37,6 @@ class AppModule {
         return ApiUtils.getFoodieDao()
     }
 
-
     @Provides
     @Singleton
     fun provideFirebaseAuthRepository(firebaseAuthDataSource: FirebaseAuthDataSource): FirebaseAuthRepository {
@@ -51,6 +53,25 @@ class AppModule {
     @Singleton
     fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideFirebaseFirestoreRepository(firebaseFirestoreDataSource: FirebaseFirestoreDataSource): FirebaseFirestoreRepository {
+        return FirebaseFirestoreRepository(firebaseFirestoreDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseFirestoreDataSource(firebaseFirestoreInstance: FirebaseFirestore): FirebaseFirestoreDataSource {
+        return FirebaseFirestoreDataSource(firebaseFirestoreInstance)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseFirestore(): FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
     }
 
 

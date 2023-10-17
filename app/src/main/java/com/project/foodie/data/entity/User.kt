@@ -6,7 +6,6 @@ data class User(
     var userSurname: String,
     var userPhoneNumber: String,
     var userAddress: String,
-    var userFavoriteList: List<Yemek>,
 ){
     companion object {
         fun fromMap(map: Map<String, Any>): User {
@@ -15,8 +14,7 @@ data class User(
                 userName = map["userName"] as String,
                 userSurname = map["userSurname"] as String,
                 userPhoneNumber = map["userPhoneNumber"] as String,
-                userAddress = map["userAddress"] as String,
-                userFavoriteList = map["userFavoriteList"] as List<Yemek>
+                userAddress = map["userAddress"] as String
             )
         }
     }
@@ -28,7 +26,7 @@ data class User(
             "userSurname" to userSurname,
             "userPhoneNumber" to userPhoneNumber,
             "userAddress" to userAddress,
-            "userFavoriteList" to userFavoriteList
+
         )
     }
 }

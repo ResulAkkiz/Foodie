@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.project.foodie.R
 import com.project.foodie.databinding.FragmentErrorBottomSheetBinding
@@ -35,6 +36,8 @@ class SignupFragment : Fragment() {
     ): View? {
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
         val view = binding.root
+        val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
         binding.signupButton.setOnClickListener {
             checkValidation(R.drawable.outline_info_24, "Lütfen gerekli alanları doldurunuz") {
                 with(binding){
@@ -46,13 +49,14 @@ class SignupFragment : Fragment() {
 
             }
         }
+
         binding.loginButton.setOnClickListener {
             Navigation.findNavController(it).popBackStack()
         }
+
         viewModel.firebaseUser.observe(viewLifecycleOwner) { firebaseUser ->
             if (firebaseUser != null) {
-                Navigation.findNavController(requireView())
-                    .navigate(SignupFragmentDirections.actionSignupFragmentToMainFragment())
+                navController.navigate(SignupFragmentDirections.actionSignupFragmentToMainFragment())
             }
         }
 
