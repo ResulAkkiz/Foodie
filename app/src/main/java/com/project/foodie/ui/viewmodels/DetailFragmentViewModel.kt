@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
+import com.project.foodie.data.entity.Sepet
 import com.project.foodie.data.entity.User
 import com.project.foodie.data.entity.Yemek
 import com.project.foodie.data.repo.FirebaseAuthRepository
@@ -37,40 +38,52 @@ class DetailFragmentViewModel @Inject constructor(
         yemekPict: String,
         yemekPrice: Int,
         yemekOrderAmount: Int,
-        userName: String,
-    ) {
+
+        ) {
         CoroutineScope(Dispatchers.Main).launch {
-            try {
-                val cartList = foodieRepository.getCartList("Resul")
-
-                val cartItemFiltered = cartList.firstOrNull { it.sepetYemekName == yemekName }
-
-                if (cartItemFiltered != null) {
-
-                    foodieRepository.deleteCartItem(cartItemFiltered.sepetYemekId, "Resul")
-
-                    foodieRepository.insertCart(
-                        yemekName,
-                        yemekPict,
-                        yemekPrice,
-                        yemekOrderAmount + cartItemFiltered.sepetYemekOrderAmount,
-                        userName
-                    )
-
-                } else {
-
-                    foodieRepository.insertCart(
-                        yemekName,
-                        yemekPict,
-                        yemekPrice,
-                        yemekOrderAmount,
-                        userName
-                    )
-                }
-
-            } catch (e: Exception) {
-                Log.e("HATA", e.message.toString())
+            if (user == null) {
+                user = firebaseAuthRepository.currentUser()
             }
+            if (user != null) {
+                try {
+
+                    val cartList = try {
+                        foodieRepository.getCartList(user!!.uid)
+                    } catch (e: Exception) {
+                        listOf()
+                    }
+
+
+                    val cartItemFiltered = cartList.firstOrNull { it.sepetYemekName == yemekName }
+
+                    if (cartItemFiltered != null) {
+
+                        foodieRepository.deleteCartItem(cartItemFiltered.sepetYemekId, user!!.uid)
+
+                        foodieRepository.insertCart(
+                            yemekName,
+                            yemekPict,
+                            yemekPrice,
+                            yemekOrderAmount + cartItemFiltered.sepetYemekOrderAmount,
+                            user!!.uid
+                        )
+
+                    } else {
+
+                        foodieRepository.insertCart(
+                            yemekName,
+                            yemekPict,
+                            yemekPrice,
+                            yemekOrderAmount,
+                            user!!.uid
+                        )
+                    }
+
+                } catch (e: Exception) {
+                    Log.e("HATA", e.message.toString())
+                }
+            }
+
 
         }
     }

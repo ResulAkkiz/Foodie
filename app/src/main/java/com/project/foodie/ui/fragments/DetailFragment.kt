@@ -104,8 +104,8 @@ class DetailFragment : Fragment() {
                     yemekPict = yemekValue.yemekPict,
                     yemekPrice = yemekValue.yemekPrice,
                     yemekOrderAmount = amount,
-                    userName = "Resul"
                 )
+                Log.e("TAG",yemekValue.toString())
             }
         }
 

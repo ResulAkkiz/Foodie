@@ -70,7 +70,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Free Delivery"
+                    android:text="@string/ucretsiz_teslimat_string"
                     android:textColor="@color/descriptionTextColor" />
 
             </LinearLayout>

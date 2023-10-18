@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavHost
+import androidx.navigation.Navigation
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.project.foodie.R
 import com.project.foodie.data.entity.User
@@ -60,6 +62,10 @@ class ProfileFragment : Fragment() {
                     )
                 }
             }
+        }
+
+        binding.signOutButton.setOnClickListener {
+            viewModel.signOut()
         }
 
         viewModel.updateResult.observe(viewLifecycleOwner) { result ->

@@ -113,7 +113,8 @@
 
                     android:id="@+id/searchView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:queryHint="@string/ara_string" />
 
 
             </LinearLayout>
