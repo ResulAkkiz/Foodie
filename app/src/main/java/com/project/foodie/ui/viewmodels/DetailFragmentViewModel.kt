@@ -30,7 +30,7 @@ class DetailFragmentViewModel @Inject constructor(
     }
 
 
-    val isFavorite=MutableLiveData<FirebaseFirestoreResult>()
+    val isFavorite = MutableLiveData<FirebaseFirestoreResult>()
 
     fun insertCart(
         yemekName: String,
@@ -41,19 +41,40 @@ class DetailFragmentViewModel @Inject constructor(
     ) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                foodieRepository.insertCart(
-                    yemekName,
-                    yemekPict,
-                    yemekPrice,
-                    yemekOrderAmount,
-                    userName
-                )
+                val cartList = foodieRepository.getCartList("Resul")
+
+                val cartItemFiltered = cartList.firstOrNull { it.sepetYemekName == yemekName }
+
+                if (cartItemFiltered != null) {
+
+                    foodieRepository.deleteCartItem(cartItemFiltered.sepetYemekId, "Resul")
+
+                    foodieRepository.insertCart(
+                        yemekName,
+                        yemekPict,
+                        yemekPrice,
+                        yemekOrderAmount + cartItemFiltered.sepetYemekOrderAmount,
+                        userName
+                    )
+
+                } else {
+
+                    foodieRepository.insertCart(
+                        yemekName,
+                        yemekPict,
+                        yemekPrice,
+                        yemekOrderAmount,
+                        userName
+                    )
+                }
+
             } catch (e: Exception) {
                 Log.e("HATA", e.message.toString())
             }
 
         }
     }
+
 
     fun insertFavorite(
         yemek: Yemek,
@@ -77,8 +98,8 @@ class DetailFragmentViewModel @Inject constructor(
                 user = firebaseAuthRepository.currentUser()
             }
             if (user != null) {
-               val result= firebaseFirestoreRepository.checkFavorited(user!!.uid, favoriteId)
-                isFavorite.value=result
+                val result = firebaseFirestoreRepository.checkFavorited(user!!.uid, favoriteId)
+                isFavorite.value = result
             }
 
         }
@@ -91,7 +112,7 @@ class DetailFragmentViewModel @Inject constructor(
             }
 
             if (user != null) {
-                firebaseFirestoreRepository.deleteFavorite(user!!.uid,favoriteId)
+                firebaseFirestoreRepository.deleteFavorite(user!!.uid, favoriteId)
                 checkFavorited(favoriteId)
             }
 

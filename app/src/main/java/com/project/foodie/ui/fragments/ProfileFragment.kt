@@ -60,23 +60,23 @@ class ProfileFragment : Fragment() {
                     )
                 }
             }
+        }
 
-            viewModel.updateResult.observe(viewLifecycleOwner) { result ->
-                Log.e("TAG", result.toString())
-                when (result) {
-                    is FirebaseFirestoreResult.Success<*> -> {
-                        showBottomSheetDialog(
-                            R.drawable.baseline_check_circle_outline_24,
-                            "Güncelleme işlemi başarıyla gerçekleşti."
-                        )
-                    }
+        viewModel.updateResult.observe(viewLifecycleOwner) { result ->
+            Log.e("TAG", result.toString())
+            when (result) {
+                is FirebaseFirestoreResult.Success<*> -> {
+                    showBottomSheetDialog(
+                        R.drawable.baseline_check_circle_outline_24,
+                        "Güncelleme işlemi başarıyla gerçekleşti."
+                    )
+                }
 
-                    is FirebaseFirestoreResult.Failure -> {
-                        showBottomSheetDialog(
-                            R.drawable.outline_info_24,
-                            "Bir hata meydana geldi: ${result.error}"
-                        )
-                    }
+                is FirebaseFirestoreResult.Failure -> {
+                    showBottomSheetDialog(
+                        R.drawable.outline_info_24,
+                        "Bir hata meydana geldi: ${result.error}"
+                    )
                 }
             }
         }

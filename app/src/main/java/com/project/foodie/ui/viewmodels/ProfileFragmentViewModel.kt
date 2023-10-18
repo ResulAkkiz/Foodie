@@ -25,16 +25,18 @@ class ProfileFragmentViewModel @Inject constructor(
     val getUserResult = MutableLiveData<FirebaseFirestoreResult>()
     val updateResult = MutableLiveData<FirebaseFirestoreResult>()
 
+    companion object {
+        var currentUser: FirebaseUser? = null
+    }
 
 
     fun getUser() {
         CoroutineScope(Dispatchers.Main).launch {
-            val currentUser = firebaseAuthRepository.currentUser()
+
+            currentUser= firebaseAuthRepository.currentUser()
             if (currentUser != null) {
-                val result = firebaseFirestoreRepository.getUserById(currentUser.uid)
-
-                getUserResult.value=result
-
+                val result = firebaseFirestoreRepository.getUserById(currentUser!!.uid)
+                getUserResult.value = result
             }
         }
     }
@@ -46,7 +48,7 @@ class ProfileFragmentViewModel @Inject constructor(
         CoroutineScope(Dispatchers.Main).launch {
             Log.e("TAG", "updateUser")
             val result = firebaseFirestoreRepository.updateUser(userId, map)
-            updateResult.value=result
+            updateResult.value = result
         }
     }
 }

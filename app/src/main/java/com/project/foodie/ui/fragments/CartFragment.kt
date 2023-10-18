@@ -51,8 +51,7 @@ class CartFragment : Fragment() {
 
         viewModel.cartList.observe(viewLifecycleOwner) { cartList ->
            Log.e("TAG","cartList : ${cartList.size}")
-            val newCartList=birlestirSepet(cartList)
-            var adapter = CartRecyclerViewAdapter(newCartList, requireContext(),viewModel)
+            var adapter = CartRecyclerViewAdapter(cartList, requireContext(),viewModel)
             binding.cartRecyclerView.adapter = adapter
         }
 
@@ -120,17 +119,5 @@ class CartFragment : Fragment() {
         dialog.show()
     }
 
-    fun birlestirSepet(sepetListesi: List<Sepet>): List<Sepet> {
-        val groupedSepet = sepetListesi.groupBy { it.sepetYemekName }
-        val birlesmisSepetListesi = mutableListOf<Sepet>()
 
-        groupedSepet.forEach { (yemekAdi, sepetler) ->
-            var toplamSiparisAdeti = 0
-            sepetler.forEach { toplamSiparisAdeti += it.sepetYemekOrderAmount }
-            val birlesmisSepet = sepetler[0].copy(sepetYemekOrderAmount = toplamSiparisAdeti)
-            birlesmisSepetListesi.add(birlesmisSepet)
-        }
-
-        return birlesmisSepetListesi
-    }
 }

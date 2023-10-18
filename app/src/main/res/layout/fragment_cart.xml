@@ -14,27 +14,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/transparent"
-        android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:contentInsetEnd="8dp"
-        app:contentInsetStart="8dp"
+        android:minHeight="?attr/actionBarSize"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:gravity="center">
-
-
-
+        <androidx.cardview.widget.CardView
+            android:layout_gravity="center_horizontal"
+            app:cardCornerRadius="8dp"
+            app:cardUseCompatPadding="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
             <LinearLayout
-                android:layout_width="0dp"
+                android:padding="8dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:background="@android:color/transparent"
                 android:gravity="center">
+
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -49,10 +48,13 @@
                     android:text="Foodie Cart"
                     android:textColor="@color/titleTextColor"
                     android:textSize="24sp" />
+
+
             </LinearLayout>
 
+        </androidx.cardview.widget.CardView>
 
-        </LinearLayout>
+
     </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.core.widget.NestedScrollView
