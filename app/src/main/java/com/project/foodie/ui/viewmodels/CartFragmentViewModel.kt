@@ -18,6 +18,7 @@ import javax.inject.Inject
 class CartFragmentViewModel @Inject constructor(private var foodieRepository: FoodieRepository) :
     ViewModel() {
     val cartList = MutableLiveData<List<Sepet>>()
+    val totalPrice=MutableLiveData<Int>()
 
     init {
         getCartList()
@@ -30,6 +31,7 @@ class CartFragmentViewModel @Inject constructor(private var foodieRepository: Fo
             }catch (e: Exception){
                 cartList.value= listOf()
             }
+            cartList.value?.let { calculateTotalPrice(it) }
 
         }
     }
@@ -44,5 +46,13 @@ class CartFragmentViewModel @Inject constructor(private var foodieRepository: Fo
             }
 
         }
+    }
+
+    fun calculateTotalPrice(yemekList:List<Sepet>){
+        var totalPrice = 0
+        for (item in yemekList) {
+            totalPrice += item.sepetYemekPrice * item.sepetYemekOrderAmount
+        }
+        this.totalPrice.value=totalPrice
     }
 }

@@ -11,7 +11,6 @@ import android.view.Window
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
-import com.project.foodie.R
 import com.project.foodie.data.entity.Sepet
 import com.project.foodie.databinding.CartSingleItemBinding
 import com.project.foodie.databinding.DeleteConfirmDialogBinding
@@ -22,7 +21,7 @@ class CartRecyclerViewAdapter(
     var cartList: List<Sepet>,
     var mContext: Context,
     var viewModel: CartFragmentViewModel,
-    var totalPriceListener: (totalPrice: Int) -> Unit,
+
 ) :
     RecyclerView.Adapter<CartRecyclerViewAdapter.CartViewHolder>() {
 
@@ -31,64 +30,63 @@ class CartRecyclerViewAdapter(
     inner class CartViewHolder(var view: CartSingleItemBinding) : ViewHolder(view.root) {
         fun bind(cartItem: Sepet) {
             with(view) {
-                orderImageView.setImageResource(R.drawable.pizza_sample_im)
-                var singleOrderTotalPrice =
-                    cartItem.sepetYemekPrice * cartItem.sepetYemekOrderAmount
-                totalPrice += singleOrderTotalPrice
                 var amount = cartItem.sepetYemekOrderAmount
-                orderAmountTextView.text = amount.toString()
-                orderNameTextView.text = cartItem.sepetYemekName
+                var price = cartItem.sepetYemekPrice
+                var singleLineTotalPrice = price * amount
+                totalPrice += singleLineTotalPrice
+
+
                 orderTotalPrice.text = buildString {
-                    append(singleOrderTotalPrice)
+                    append(singleLineTotalPrice)
                     append(" ₺")
                 }
-                Glide.with(mContext).load(cartItem.sepetYemekPict.getImage()).into(orderImageView);
+
                 deleteButton.setOnClickListener {
                     showDeleteConfirmDialogBox(positiveButton = {
                         viewModel.deleteCartItem(cartItem.sepetYemekId)
-                        updateTotalPrice()
+                        viewModel.calculateTotalPrice(cartList)
                     }, {})
 
                 }
-                totalPriceListener(totalPrice)
+
 
                 decreaseButton.setOnClickListener {
-
                     amount--
-                    if (amount == 0) {
-                        //Todo: Delete process here
-
-                    }
+                    if (amount < 0) amount = 0
+                    singleLineTotalPrice = price * amount
                     orderAmountTextView.text = amount.toString()
-                    singleOrderTotalPrice = cartItem.sepetYemekPrice * amount
                     orderTotalPrice.text = buildString {
-                        append(singleOrderTotalPrice)
+                        append(singleLineTotalPrice)
                         append(" ₺")
                     }
                     cartItem.sepetYemekOrderAmount = amount
-                    updateTotalPrice()
-
-
+                    viewModel.calculateTotalPrice(cartList)
                 }
+
                 increaseButton.setOnClickListener {
 
                     amount++
                     if (amount > 10) amount = 10
                     orderAmountTextView.text = amount.toString()
 
-                    singleOrderTotalPrice = cartItem.sepetYemekPrice * amount
+                    singleLineTotalPrice = cartItem.sepetYemekPrice * amount
                     orderTotalPrice.text = buildString {
-                        append(singleOrderTotalPrice)
+                        append(singleLineTotalPrice)
                         append(" ₺")
                     }
+
                     cartItem.sepetYemekOrderAmount = amount
 
-                    updateTotalPrice()
-
+                    viewModel.calculateTotalPrice(cartList)
 
                 }
 
+
+                orderAmountTextView.text = amount.toString()
+                Glide.with(mContext).load(cartItem.sepetYemekPict.getImage()).into(orderImageView);
+                orderNameTextView.text = cartItem.sepetYemekName
             }
+
         }
 
     }
@@ -106,14 +104,7 @@ class CartRecyclerViewAdapter(
         holder.bind(currentCartItem)
     }
 
-    private fun updateTotalPrice() {
-        var totalPrice = 0
-        for (item in cartList) {
-            totalPrice += item.sepetYemekPrice * item.sepetYemekOrderAmount
-        }
-        Log.e("TAG","Total price in adapter : $totalPrice")
-        totalPriceListener(totalPrice)
-    }
+
 
     private fun showDeleteConfirmDialogBox(positiveButton: () -> Unit, negativeButton: () -> Unit) {
         val dialog = Dialog(mContext)

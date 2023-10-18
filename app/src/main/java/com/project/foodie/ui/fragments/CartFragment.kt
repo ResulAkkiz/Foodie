@@ -31,7 +31,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class CartFragment : Fragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
-    var totalPrice = 0
     private lateinit var viewModel: CartFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,30 +48,29 @@ class CartFragment : Fragment() {
 
         binding.cartRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
         viewModel.cartList.observe(viewLifecycleOwner) { cartList ->
            Log.e("TAG","cartList : ${cartList.size}")
-            var adapter = CartRecyclerViewAdapter(cartList, requireContext(),viewModel) { totalPrice ->
-                Log.e("TAG","Total price in cart fragment : $totalPrice")
-                this.totalPrice = totalPrice
-                if (totalPrice == 0) {
-                    binding.totalPriceFabButton.visibility = View.GONE
-                } else {
-                    binding.totalPriceFabButton.visibility = View.VISIBLE
-                    binding.totalPriceFabButton.text = buildString {
-                        append(totalPrice)
-                        append(" ₺")
-                    }
-                }
-
-            }
-            binding.totalPriceFabButton.setOnClickListener {
-
-                showConfirmDialogBox()
-            }
+            val newCartList=birlestirSepet(cartList)
+            var adapter = CartRecyclerViewAdapter(newCartList, requireContext(),viewModel)
             binding.cartRecyclerView.adapter = adapter
         }
 
+        viewModel.totalPrice.observe(viewLifecycleOwner){totalPrice->
+            if (totalPrice == 0) {
+                binding.totalPriceFabButton.visibility = View.GONE
+            } else {
+                binding.totalPriceFabButton.visibility = View.VISIBLE
+                binding.totalPriceFabButton.text = buildString {
+                    append(totalPrice)
+                    append(" ₺")
+                }
+            }
+        }
 
+        binding.totalPriceFabButton.setOnClickListener {
+            showConfirmDialogBox()
+        }
 
         return view
 
@@ -120,5 +118,19 @@ class CartFragment : Fragment() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         dialog.show()
+    }
+
+    fun birlestirSepet(sepetListesi: List<Sepet>): List<Sepet> {
+        val groupedSepet = sepetListesi.groupBy { it.sepetYemekName }
+        val birlesmisSepetListesi = mutableListOf<Sepet>()
+
+        groupedSepet.forEach { (yemekAdi, sepetler) ->
+            var toplamSiparisAdeti = 0
+            sepetler.forEach { toplamSiparisAdeti += it.sepetYemekOrderAmount }
+            val birlesmisSepet = sepetler[0].copy(sepetYemekOrderAmount = toplamSiparisAdeti)
+            birlesmisSepetListesi.add(birlesmisSepet)
+        }
+
+        return birlesmisSepetListesi
     }
 }
