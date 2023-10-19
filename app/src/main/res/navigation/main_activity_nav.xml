@@ -20,6 +20,9 @@
             app:destination="@id/mainFragment"
             app:popUpTo="@id/main_activity_nav"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/boardingFragment"

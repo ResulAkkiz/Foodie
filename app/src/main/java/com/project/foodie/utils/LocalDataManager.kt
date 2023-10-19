@@ -6,17 +6,17 @@ import android.content.SharedPreferences
 
 class LocalDataManager {
     companion object{
-        fun setSharedPreference(context: Context, key: String?, value: String?) {
+        fun setSharedPreference(context: Context, key: String?, value: Boolean) {
             val sharedPref: SharedPreferences =
                 context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
             val edit = sharedPref.edit()
-            edit.putString(key, value)
+            edit.putBoolean(key, value)
             edit.apply()
         }
 
-        fun getSharedPreference(context: Context, key: String?, defaultValue: String?): String? {
+        fun getSharedPreference(context: Context, key: String?, defaultValue: Boolean): Boolean {
             return context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
-                .getString(key, defaultValue)
+                .getBoolean(key, defaultValue)
         }
 
         fun clearSharedPreference(context: Context) {

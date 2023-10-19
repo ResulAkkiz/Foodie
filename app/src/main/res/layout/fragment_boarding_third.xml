@@ -47,6 +47,8 @@
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleY="0.8"
+        android:scaleX="0.8"
         android:src="@drawable/fast_food3_im"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

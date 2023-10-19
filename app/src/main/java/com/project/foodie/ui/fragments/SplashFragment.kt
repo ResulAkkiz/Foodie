@@ -9,13 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.project.foodie.R
-import com.project.foodie.databinding.FragmentProfileBinding
-import com.project.foodie.databinding.FragmentSignupBinding
 import com.project.foodie.databinding.FragmentSplashBinding
-import com.project.foodie.ui.viewmodels.LoginFragmentViewModel
 import com.project.foodie.ui.viewmodels.SplashFragmentViewModel
+import com.project.foodie.utils.LocalDataManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,6 +35,8 @@ class SplashFragment : Fragment() {
     ): View? {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
         val view = binding.root
+        Glide.with(this).load(R.drawable.splash_icon_ic)
+            .into(binding.splashImageView)
         viewModel.currentUser()
 
         viewModel.firebaseUser.observe(viewLifecycleOwner) { firebaseUser ->
@@ -46,16 +46,22 @@ class SplashFragment : Fragment() {
                     Navigation.findNavController(requireView())
                         .navigate(SplashFragmentDirections.actionSplashFragmentToMainFragment())
                 } else {
-                    Navigation.findNavController(requireView())
-                        .navigate(SplashFragmentDirections.actionSplashFragmentToBoardingFragment())
+                    val result =
+                        LocalDataManager.getSharedPreference(requireContext(), "goBoarding", true)
+                    if (result) {
+                        Navigation.findNavController(requireView())
+                            .navigate(SplashFragmentDirections.actionSplashFragmentToBoardingFragment())
+                    } else {
+                        Navigation.findNavController(requireView())
+                            .navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
+                    }
+
                 }
 
-            }, 1000)
+            }, 4000)
         }
 
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            findNavController().navigate(R.id.action_splashFragment_to_boardingFragment)
-//        }, 250)
+
         return view
     }
 }

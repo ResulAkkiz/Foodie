@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.project.foodie.R
 import com.project.foodie.data.entity.Yemek
 import com.project.foodie.databinding.CartAlertDialogBinding
@@ -51,6 +52,7 @@ class FavoriteFragment : Fragment() {
 
         val view = binding.root
         binding.favoriteRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         binding.progressBar.visibility=View.VISIBLE
         viewModel.resultGetFavorites.observe(viewLifecycleOwner) { result ->
             when (result) {

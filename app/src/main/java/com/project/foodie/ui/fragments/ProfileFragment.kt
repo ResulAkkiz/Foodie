@@ -43,13 +43,14 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        binding.scrollView2.visibility=View.GONE
-        binding.progressBar3.visibility=View.VISIBLE
+        binding.scrollView2.visibility = View.GONE
+        binding.progressBar3.visibility = View.VISIBLE
 
         binding.profileUpdateButton.setOnClickListener {
             Log.e("TAG", "set onclick listener")
             checkValidation(R.drawable.outline_info_24, "Lütfen gerekli yerleri doldurunuz.") {
                 if (user != null) {
+                    Log.e("TAG", "updateuser before")
                     viewModel.updateUser(
                         user!!.userId,
                         hashMapOf(
@@ -59,7 +60,30 @@ class ProfileFragment : Fragment() {
                                 .trim(),
                             "userAddress" to binding.profileAdressEditText.text.toString().trim(),
                         ),
-                    )
+                    ) {
+                        Log.e("TAG", "updateuser after")
+                        val result = viewModel.updateResult
+                        when (result) {
+                            is FirebaseFirestoreResult.Success<*> -> {
+                                showBottomSheetDialog(
+                                    R.drawable.baseline_check_circle_outline_24,
+                                    "Güncelleme işlemi başarıyla gerçekleşti."
+                                )
+                            }
+
+                            is FirebaseFirestoreResult.Failure -> {
+                                showBottomSheetDialog(
+                                    R.drawable.outline_info_24,
+                                    "Bir hata meydana geldi: ${result.error}"
+                                )
+                            }
+
+                            else -> {}
+                        }
+                        Log.e("TAG", result.toString())
+
+                    }
+
                 }
             }
         }
@@ -68,25 +92,24 @@ class ProfileFragment : Fragment() {
             viewModel.signOut()
         }
 
-        viewModel.updateResult.observe(viewLifecycleOwner) { result ->
-            Log.e("TAG", result.toString())
-            when (result) {
-                is FirebaseFirestoreResult.Success<*> -> {
-                    showBottomSheetDialog(
-                        R.drawable.baseline_check_circle_outline_24,
-                        "Güncelleme işlemi başarıyla gerçekleşti."
-                    )
-                }
-
-                is FirebaseFirestoreResult.Failure -> {
-                    showBottomSheetDialog(
-                        R.drawable.outline_info_24,
-                        "Bir hata meydana geldi: ${result.error}"
-                    )
-                }
-            }
-        }
-
+//        viewModel.updateResult.observe(viewLifecycleOwner) { result ->
+//            Log.e("TAG", result.toString())
+//            when (result) {
+//                is FirebaseFirestoreResult.Success<*> -> {
+//                    showBottomSheetDialog(
+//                        R.drawable.baseline_check_circle_outline_24,
+//                        "Güncelleme işlemi başarıyla gerçekleşti."
+//                    )
+//                }
+//
+//                is FirebaseFirestoreResult.Failure -> {
+//                    showBottomSheetDialog(
+//                        R.drawable.outline_info_24,
+//                        "Bir hata meydana geldi: ${result.error}"
+//                    )
+//                }
+//            }
+//        }
 
 
         viewModel.getUserResult.observe(viewLifecycleOwner) { result ->
@@ -111,8 +134,8 @@ class ProfileFragment : Fragment() {
                 }
 
             }
-            binding.scrollView2.visibility=View.VISIBLE
-            binding.progressBar3.visibility=View.GONE
+            binding.scrollView2.visibility = View.VISIBLE
+            binding.progressBar3.visibility = View.GONE
 
 
         }

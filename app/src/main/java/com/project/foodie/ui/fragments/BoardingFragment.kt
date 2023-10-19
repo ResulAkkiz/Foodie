@@ -11,12 +11,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.project.foodie.R
 import com.project.foodie.databinding.FragmentBoardingBinding
 import com.project.foodie.ui.adapters.BoardingViewPagerAdapter
+import com.project.foodie.utils.LocalDataManager
 
 
 class BoardingFragment : Fragment() {
     private var _binding: FragmentBoardingBinding? = null
     private val binding get() = _binding!!
-    private var currentItem=0
+    private var currentItem = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,11 +40,13 @@ class BoardingFragment : Fragment() {
 
         binding.nextButton.setOnClickListener {
 
-            if (currentItem < adapter.itemCount-1) {
-                currentItem ++
+            if (currentItem < adapter.itemCount - 1) {
+                currentItem++
                 viewPager.currentItem = currentItem
-            }else{
-                Navigation.findNavController(it).navigate(R.id.action_boardingFragment_to_loginFragment)
+            } else {
+                LocalDataManager.setSharedPreference(requireContext(), "goBoarding", false)
+                Navigation.findNavController(it)
+                    .navigate(R.id.action_boardingFragment_to_loginFragment)
             }
         }
         return view
