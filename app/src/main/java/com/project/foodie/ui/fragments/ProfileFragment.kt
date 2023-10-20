@@ -1,5 +1,6 @@
 package com.project.foodie.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,7 +10,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavHost
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.project.foodie.MainActivity
 import com.project.foodie.R
 import com.project.foodie.data.entity.User
 import com.project.foodie.databinding.FragmentErrorBottomSheetBinding
@@ -60,9 +64,7 @@ class ProfileFragment : Fragment() {
                                 .trim(),
                             "userAddress" to binding.profileAdressEditText.text.toString().trim(),
                         ),
-                    ) {
-                        Log.e("TAG", "updateuser after")
-                        val result = viewModel.updateResult
+                    ) { result ->
                         when (result) {
                             is FirebaseFirestoreResult.Success<*> -> {
                                 showBottomSheetDialog(
@@ -78,7 +80,6 @@ class ProfileFragment : Fragment() {
                                 )
                             }
 
-                            else -> {}
                         }
                         Log.e("TAG", result.toString())
 
@@ -89,27 +90,14 @@ class ProfileFragment : Fragment() {
         }
 
         binding.signOutButton.setOnClickListener {
-            viewModel.signOut()
+            viewModel.signOut { result ->
+                if (result) {
+                    startActivity(Intent(requireContext(),MainActivity::class.java))
+                    requireActivity().finish()
+                }
+            }
         }
 
-//        viewModel.updateResult.observe(viewLifecycleOwner) { result ->
-//            Log.e("TAG", result.toString())
-//            when (result) {
-//                is FirebaseFirestoreResult.Success<*> -> {
-//                    showBottomSheetDialog(
-//                        R.drawable.baseline_check_circle_outline_24,
-//                        "Güncelleme işlemi başarıyla gerçekleşti."
-//                    )
-//                }
-//
-//                is FirebaseFirestoreResult.Failure -> {
-//                    showBottomSheetDialog(
-//                        R.drawable.outline_info_24,
-//                        "Bir hata meydana geldi: ${result.error}"
-//                    )
-//                }
-//            }
-//        }
 
 
         viewModel.getUserResult.observe(viewLifecycleOwner) { result ->

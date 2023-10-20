@@ -23,8 +23,6 @@ class ProfileFragmentViewModel @Inject constructor(
 ) :
     ViewModel() {
     val getUserResult = MutableLiveData<FirebaseFirestoreResult>()
-    var updateResult:FirebaseFirestoreResult?=null
-    val signOutResult = MutableLiveData<Boolean>()
 
     companion object {
         var currentUser: FirebaseUser? = null
@@ -46,19 +44,18 @@ class ProfileFragmentViewModel @Inject constructor(
 
     fun updateUser(
         userId: String,
-        map: Map<String, Any>,onComplete:()->Unit
+        map: Map<String, Any>,onComplete:(result:FirebaseFirestoreResult)->Unit
     ) {
         CoroutineScope(Dispatchers.Main).launch {
-            Log.e("TAG", "updateUser")
-            val result = firebaseFirestoreRepository.updateUser(userId, map)
-            updateResult = result
-            onComplete()
+
+            onComplete(firebaseFirestoreRepository.updateUser(userId, map))
         }
     }
 
-    fun signOut() {
+    fun signOut(onComplete:(result:Boolean)->Unit) {
         CoroutineScope(Dispatchers.Main).launch {
-            signOutResult.value = firebaseAuthRepository.signOut()
+
+            onComplete(firebaseAuthRepository.signOut())
         }
     }
 }

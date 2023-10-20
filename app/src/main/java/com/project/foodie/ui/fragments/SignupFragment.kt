@@ -1,5 +1,6 @@
 package com.project.foodie.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.project.foodie.HomeActivity
 import com.project.foodie.R
 import com.project.foodie.databinding.FragmentErrorBottomSheetBinding
 import com.project.foodie.databinding.FragmentLoginBinding
@@ -56,7 +58,8 @@ class SignupFragment : Fragment() {
 
         viewModel.firebaseUser.observe(viewLifecycleOwner) { firebaseUser ->
             if (firebaseUser != null) {
-                navController.navigate(SignupFragmentDirections.actionSignupFragmentToMainFragment())
+                val intent = Intent(requireContext(), HomeActivity::class.java)
+                startActivity(intent)
             }
         }
 

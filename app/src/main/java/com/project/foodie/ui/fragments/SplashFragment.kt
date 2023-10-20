@@ -1,5 +1,6 @@
 package com.project.foodie.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
+import com.project.foodie.HomeActivity
 import com.project.foodie.R
 import com.project.foodie.databinding.FragmentSplashBinding
 import com.project.foodie.ui.viewmodels.SplashFragmentViewModel
@@ -43,8 +45,8 @@ class SplashFragment : Fragment() {
 
             Handler(Looper.getMainLooper()).postDelayed({
                 if (firebaseUser != null) {
-                    Navigation.findNavController(requireView())
-                        .navigate(SplashFragmentDirections.actionSplashFragmentToMainFragment())
+                    startActivity(Intent(requireContext(),HomeActivity::class.java))
+                    requireActivity().finish()
                 } else {
                     val result =
                         LocalDataManager.getSharedPreference(requireContext(), "goBoarding", true)

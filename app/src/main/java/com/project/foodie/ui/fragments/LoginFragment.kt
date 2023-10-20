@@ -1,5 +1,6 @@
 package com.project.foodie.ui.fragments
 
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.project.foodie.HomeActivity
 import com.project.foodie.R
 import com.project.foodie.databinding.FragmentBoardingBinding
 import com.project.foodie.databinding.FragmentErrorBottomSheetBinding
@@ -51,12 +53,13 @@ class LoginFragment : Fragment() {
         }
         viewModel.firebaseUser.observe(viewLifecycleOwner) { firebaseUser ->
             if (firebaseUser != null) {
-                Navigation.findNavController(requireView())
-                    .navigate(LoginFragmentDirections.actionLoginFragmentToMainFragment())
+                val intent = Intent(requireContext(), HomeActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
             }
         }
 
-        viewModel.exception.observe(viewLifecycleOwner){error->
+        viewModel.exception.observe(viewLifecycleOwner) { error ->
             showBottomSheetDialog(R.drawable.outline_info_24, error.toString())
 
         }
