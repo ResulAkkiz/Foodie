@@ -31,12 +31,13 @@ class FirebaseAuthDataSource(private val firebaseAuthInstance: FirebaseAuth) :
                 authResult.user?.let { FirebaseAuthResult.Success(it) }
             } catch (e: FirebaseAuthException) {
                 val error = when (e.errorCode) {
-
+                    "ERROR_INVALID_EMAIL" ->"Geçersiz e-posta adresi"
                     "ERROR_EMAIL_ALREADY_IN_USE" -> "Bu e-posta adresi zaten kullanımda."
                     "ERROR_WEAK_PASSWORD" -> "Zayıf şifre kullanıldı. Şifre en az 6 karakterden oluşmalıdır."
                     else -> "Bir hata oluştu: ${e.localizedMessage}"
 
                 }
+                Log.e("TAG",e.errorCode)
                 FirebaseAuthResult.Failure(error)
             } catch (e: FirebaseAuthInvalidCredentialsException) {
                 val error = e.localizedMessage ?: "Bir hata oluştu."
