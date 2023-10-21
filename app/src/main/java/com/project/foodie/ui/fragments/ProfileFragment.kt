@@ -12,6 +12,7 @@ import androidx.navigation.NavHost
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.project.foodie.MainActivity
 import com.project.foodie.R
@@ -22,6 +23,7 @@ import com.project.foodie.databinding.FragmentSignupBinding
 import com.project.foodie.firebase.FirebaseFirestoreResult
 import com.project.foodie.ui.viewmodels.ProfileFragmentViewModel
 import com.project.foodie.ui.viewmodels.SignupFragmentViewModel
+import com.project.foodie.utils.getImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -68,14 +70,14 @@ class ProfileFragment : Fragment() {
                         when (result) {
                             is FirebaseFirestoreResult.Success<*> -> {
                                 showBottomSheetDialog(
-                                    R.drawable.baseline_check_circle_outline_24,
+                                    R.drawable.success_gif_im,
                                     "Güncelleme işlemi başarıyla gerçekleşti."
                                 )
                             }
 
                             is FirebaseFirestoreResult.Failure -> {
                                 showBottomSheetDialog(
-                                    R.drawable.outline_info_24,
+                                    R.drawable.failure_gif_im,
                                     "Bir hata meydana geldi: ${result.error}"
                                 )
                             }
@@ -163,7 +165,8 @@ class ProfileFragment : Fragment() {
             false
         )
 
-        bottomSheetBinding.errorImage.setImageResource(resInt)
+        Glide.with(requireContext()).load(resInt)
+            .into(bottomSheetBinding.errorImage);
         bottomSheetBinding.errorDescription.text = info
         dialog.setCancelable(true)
         dialog.setContentView(bottomSheetBinding.root)

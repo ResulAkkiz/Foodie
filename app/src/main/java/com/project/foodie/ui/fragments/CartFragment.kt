@@ -24,7 +24,6 @@ import com.project.foodie.databinding.CartSuccessfulDialogBinding
 import com.project.foodie.databinding.FragmentCartBinding
 import com.project.foodie.ui.adapters.CartRecyclerViewAdapter
 import com.project.foodie.ui.viewmodels.CartFragmentViewModel
-import com.project.foodie.ui.viewmodels.DetailFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -5,23 +5,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import com.project.foodie.R
 import com.project.foodie.databinding.FragmentDetailBinding
 import com.project.foodie.firebase.FirebaseFirestoreResult
 import com.project.foodie.ui.viewmodels.DetailFragmentViewModel
-import com.project.foodie.ui.viewmodels.HomeFragmentViewModel
 import com.project.foodie.utils.getDescription
 import com.project.foodie.utils.getImage
 import com.project.foodie.utils.getLocation
 import com.project.foodie.utils.getStar
 import dagger.hilt.android.AndroidEntryPoint
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
@@ -53,9 +53,9 @@ class DetailFragment : Fragment() {
                 is FirebaseFirestoreResult.Success<*> -> {
                     if (result.data is Boolean) {
                         isFavorite = result.data
-                        if (isFavorite){
+                        if (isFavorite) {
                             binding.detailFavoriteButton.setImageResource(R.drawable.baseline_favorite_24)
-                        }else{
+                        } else {
                             binding.detailFavoriteButton.setImageResource(R.drawable.baseline_favorite_border_24)
                         }
                     }
@@ -104,15 +104,32 @@ class DetailFragment : Fragment() {
                     yemekPict = yemekValue.yemekPict,
                     yemekPrice = yemekValue.yemekPrice,
                     yemekOrderAmount = amount,
+                    onSuccess = {
+                        MotionToast.createColorToast(requireActivity(),
+                            "Başarılı",
+                            "Ürününüz sepete eklendi.",
+                            MotionToastStyle.SUCCESS,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.SHORT_DURATION,
+                            ResourcesCompat.getFont(requireContext(),R.font.poppins_medium))
+                    }, onFailure = { error ->
+                        MotionToast.createColorToast(requireActivity(),
+                            "Hata",
+                            "Hata meydana geldi:$error",
+                            MotionToastStyle.ERROR,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.SHORT_DURATION,
+                            ResourcesCompat.getFont(requireContext(),R.font.poppins_medium))
+                    }
                 )
-                Log.e("TAG",yemekValue.toString())
+                Log.e("TAG", yemekValue.toString())
             }
         }
 
         binding.detailFavoriteButton.setOnClickListener {
-            if (!isFavorite){
+            if (!isFavorite) {
                 viewModel.insertFavorite(yemekValue)
-            }else{
+            } else {
                 viewModel.deleteFavorite(yemekValue.yemekId)
             }
 

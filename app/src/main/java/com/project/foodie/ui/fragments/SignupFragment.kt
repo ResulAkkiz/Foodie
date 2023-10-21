@@ -38,8 +38,6 @@ class SignupFragment : Fragment() {
     ): View? {
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
         val view = binding.root
-        val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
         binding.signupButton.setOnClickListener {
             checkValidation(R.drawable.outline_info_24, "Lütfen gerekli alanları doldurunuz") {
                 with(binding){

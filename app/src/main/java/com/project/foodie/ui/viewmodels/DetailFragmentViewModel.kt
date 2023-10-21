@@ -38,7 +38,8 @@ class DetailFragmentViewModel @Inject constructor(
         yemekPict: String,
         yemekPrice: Int,
         yemekOrderAmount: Int,
-
+        onSuccess:()->Unit,
+        onFailure:(exception:String)->Unit
         ) {
         CoroutineScope(Dispatchers.Main).launch {
             if (user == null) {
@@ -78,9 +79,10 @@ class DetailFragmentViewModel @Inject constructor(
                             user!!.uid
                         )
                     }
-
+                    onSuccess()
                 } catch (e: Exception) {
                     Log.e("HATA", e.message.toString())
+                    onFailure(e.message.toString())
                 }
             }
 

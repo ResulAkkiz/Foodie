@@ -48,6 +48,7 @@ kapt {
 }
 
 dependencies {
+    implementation ("com.github.Spikeysanju:MotionToast:1.4")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("com.google.dagger:hilt-android:2.48")
     implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
