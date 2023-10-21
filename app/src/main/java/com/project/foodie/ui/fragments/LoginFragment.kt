@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.project.foodie.HomeActivity
 import com.project.foodie.R
@@ -18,6 +19,7 @@ import com.project.foodie.databinding.FragmentErrorBottomSheetBinding
 import com.project.foodie.databinding.FragmentLoginBinding
 import com.project.foodie.ui.viewmodels.HomeFragmentViewModel
 import com.project.foodie.ui.viewmodels.LoginFragmentViewModel
+import com.project.foodie.utils.getImage
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -60,7 +62,7 @@ class LoginFragment : Fragment() {
         }
 
         viewModel.exception.observe(viewLifecycleOwner) { error ->
-            showBottomSheetDialog(R.drawable.outline_info_24, error.toString())
+            showBottomSheetDialog(R.drawable.failure_gif_im, error.toString())
 
         }
 
@@ -95,8 +97,8 @@ class LoginFragment : Fragment() {
             null,
             false
         )
+        Glide.with(requireContext()).load(resInt).into(bottomSheetBinding.errorImage);
 
-        bottomSheetBinding.errorImage.setImageResource(resInt)
         bottomSheetBinding.errorDescription.text = info
         dialog.setCancelable(true)
         dialog.setContentView(bottomSheetBinding.root)

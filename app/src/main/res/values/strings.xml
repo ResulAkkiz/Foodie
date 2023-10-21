@@ -15,4 +15,6 @@
     <string name="foodie_sepet_title_string">Foodie Sepet</string>
     <string name="foodie_profil_title_string">Foodie Profil</string>
     <string name="sepete_ekle_string">Sepete Ekle</string>
+    <string name="tahmini_teslimat_suresi_string">Tahmini teslimat süresi: 45m</string>
+    <string name="siparisiniz_onaylandi_yola_cikmayi_bekliyor_string">Siparişiniz onaylandı, yola çıkmayı bekliyor!</string>
 </resources>

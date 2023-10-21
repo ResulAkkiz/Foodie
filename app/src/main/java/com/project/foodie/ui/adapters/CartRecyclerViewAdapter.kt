@@ -22,7 +22,7 @@ class CartRecyclerViewAdapter(
     var mContext: Context,
     var viewModel: CartFragmentViewModel,
 
-) :
+    ) :
     RecyclerView.Adapter<CartRecyclerViewAdapter.CartViewHolder>() {
 
     var totalPrice = 0;
@@ -44,7 +44,6 @@ class CartRecyclerViewAdapter(
                 deleteButton.setOnClickListener {
                     showDeleteConfirmDialogBox(positiveButton = {
                         viewModel.deleteCartItem(cartItem.sepetYemekId)
-                        viewModel.calculateTotalPrice(cartList)
                     }, {})
 
                 }
@@ -59,8 +58,18 @@ class CartRecyclerViewAdapter(
                         append(singleLineTotalPrice)
                         append(" ₺")
                     }
-                    cartItem.sepetYemekOrderAmount = amount
-                    viewModel.calculateTotalPrice(cartList)
+
+                    with(cartItem){
+                        viewModel.insertCartItem(
+                            yemekId = sepetYemekId,
+                            yemekName = sepetYemekName,
+                            yemekPict = sepetYemekPict,
+                            yemekPrice = sepetYemekPrice,
+                            yemekOrderAmount = amount
+                        )
+                    }
+
+
                 }
 
                 increaseButton.setOnClickListener {
@@ -75,9 +84,15 @@ class CartRecyclerViewAdapter(
                         append(" ₺")
                     }
 
-                    cartItem.sepetYemekOrderAmount = amount
-
-                    viewModel.calculateTotalPrice(cartList)
+                    with(cartItem){
+                        viewModel.insertCartItem(
+                            yemekId = sepetYemekId,
+                            yemekName = sepetYemekName,
+                            yemekPict = sepetYemekPict,
+                            yemekPrice = sepetYemekPrice,
+                            yemekOrderAmount = amount
+                        )
+                    }
 
                 }
 
@@ -103,7 +118,6 @@ class CartRecyclerViewAdapter(
         println(currentCartItem.sepetYemekOrderAmount)
         holder.bind(currentCartItem)
     }
-
 
 
     private fun showDeleteConfirmDialogBox(positiveButton: () -> Unit, negativeButton: () -> Unit) {

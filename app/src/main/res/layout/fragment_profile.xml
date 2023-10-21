@@ -160,13 +160,16 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp" />
 
-            <EditText
+            <com.santalu.maskara.widget.MaskEditText
                 android:id="@+id/profilePhoneNumberEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_bg"
                 android:fontFamily="@font/montserrat_semibold"
                 android:hint="Telefon Numarası*"
+                app:mask="+90 (___) ___ __ __"
+                app:maskCharacter="_"
+                app:maskStyle="completable"
                 android:inputType="phone"
                 android:padding="12dp"
                 android:textColor="@color/black"

@@ -26,7 +26,8 @@ class FirebaseAuthDataSource(private val firebaseAuthInstance: FirebaseAuth) :
     ): FirebaseAuthResult? =
         withContext(Dispatchers.IO) {
             return@withContext try {
-                val authResult = firebaseAuthInstance.createUserWithEmailAndPassword(email, password).await()
+                val authResult =
+                    firebaseAuthInstance.createUserWithEmailAndPassword(email, password).await()
                 authResult.user?.let { FirebaseAuthResult.Success(it) }
             } catch (e: FirebaseAuthException) {
                 val error = when (e.errorCode) {
@@ -34,6 +35,7 @@ class FirebaseAuthDataSource(private val firebaseAuthInstance: FirebaseAuth) :
                     "ERROR_EMAIL_ALREADY_IN_USE" -> "Bu e-posta adresi zaten kullanımda."
                     "ERROR_WEAK_PASSWORD" -> "Zayıf şifre kullanıldı. Şifre en az 6 karakterden oluşmalıdır."
                     else -> "Bir hata oluştu: ${e.localizedMessage}"
+
                 }
                 FirebaseAuthResult.Failure(error)
             } catch (e: FirebaseAuthInvalidCredentialsException) {
@@ -52,7 +54,7 @@ class FirebaseAuthDataSource(private val firebaseAuthInstance: FirebaseAuth) :
         email: String,
         password: String,
 
-    ): FirebaseAuthResult? = withContext(Dispatchers.IO) {
+        ): FirebaseAuthResult? = withContext(Dispatchers.IO) {
         return@withContext try {
             val authResult =
                 firebaseAuthInstance.signInWithEmailAndPassword(email, password).await()
@@ -76,24 +78,34 @@ class FirebaseAuthDataSource(private val firebaseAuthInstance: FirebaseAuth) :
                 "ERROR_OPERATION_NOT_ALLOWED" -> "İşlem izin verilmiyor."
                 "ERROR_WEAK_PASSWORD" -> "Zayıf şifre kullanıldı. Şifre en az 6 karakterden oluşmalıdır."
                 else -> "Bir hata oluştu: ${e.localizedMessage}"
+
+
             }
+            Log.e("FirebaseAuthException", "${e.errorCode}: ${e.message}")
             FirebaseAuthResult.Failure(error)
+
         } catch (e: FirebaseAuthInvalidUserException) {
             error = when (e.errorCode) {
                 "ERROR_USER_DISABLED" -> "Kullanıcı devre dışı bırakılmış durumda."
-                "ERROR_USER_NOT_FOUND" ->  "Kullanıcı bulunamadı."
+                "ERROR_USER_NOT_FOUND" -> "Kullanıcı bulunamadı."
                 else -> e.localizedMessage ?: "Bir hata oluştu."
             }
+            Log.e("FirebaseAuthInvalidUserException", "${e.errorCode}: ${e.message}")
             FirebaseAuthResult.Failure(error)
+
         } catch (e: FirebaseAuthInvalidCredentialsException) {
             error = when (e.errorCode) {
-                "ERROR_INVALID_EMAIL" ->  "Geçersiz e-posta."
+                "ERROR_INVALID_EMAIL" -> "Geçersiz e-posta."
                 "ERROR_WRONG_PASSWORD" -> "Yanlış şifre."
                 else -> e.localizedMessage ?: "Bir hata oluştu."
             }
+            Log.e("FirebaseAuthInvalidCredentialsException", "${e.errorCode}: ${e.message}")
             FirebaseAuthResult.Failure(error)
         } catch (e: Exception) {
             error = e.localizedMessage ?: "Bir hata oluştu."
+            if (e.localizedMessage == "An internal error has occurred. [ INVALID_LOGIN_CREDENTIALS ]") error =
+                "Kullanıcı bilgileri yanlış. Lütfen kontrol ediniz."
+            Log.e("Exception", " ${e.message}")
             FirebaseAuthResult.Failure(error)
         }
     }

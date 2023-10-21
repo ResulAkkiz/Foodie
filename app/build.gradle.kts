@@ -1,3 +1,5 @@
+import java.util.regex.Pattern.compile
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -48,6 +50,7 @@ kapt {
 }
 
 dependencies {
+    implementation ("com.github.santalu:maskara:1.0.0")
     implementation ("com.github.Spikeysanju:MotionToast:1.4")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("com.google.dagger:hilt-android:2.48")

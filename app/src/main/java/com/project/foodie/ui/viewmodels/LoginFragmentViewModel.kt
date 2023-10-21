@@ -1,5 +1,6 @@
 package com.project.foodie.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
@@ -28,9 +29,8 @@ class LoginFragmentViewModel @Inject constructor(private var firebaseAuthReposit
                 }
                 is FirebaseAuthResult.Failure -> {
                     exception.value= result.error
-                }
-                else -> {
-
+                }else->{
+                    Log.e("SignIn","Unknown Result" )
                 }
             }
         }
