@@ -2,12 +2,15 @@ package com.project.foodie.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -52,6 +55,37 @@ class HomeFragment : Fragment() {
             adapter = YemekRecyclerViewAdapter(yemekList, requireContext())
             binding.yemeklerRecyclerView.adapter = adapter
             binding.progressBar2.visibility=View.GONE
+        }
+
+        binding.sortImageView.setOnClickListener {
+            val popupMenu = PopupMenu(requireContext(), view)
+            popupMenu.menuInflater.inflate(R.menu.sort_menu, popupMenu.menu)
+            popupMenu.gravity=Gravity.CENTER
+            popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+                when (item.itemId) {
+                    R.id.sort_price_up -> {
+                        yemekListesi=yemekListesi.sortedBy { yemek: Yemek -> yemek.yemekPrice  }
+                        adapter = YemekRecyclerViewAdapter(yemekListesi, requireContext())
+                        binding.yemeklerRecyclerView.adapter = adapter
+                        true
+                    }
+                    R.id.sort_price_down -> {
+                        yemekListesi=yemekListesi.sortedByDescending { yemek: Yemek -> yemek.yemekPrice  }
+                        adapter = YemekRecyclerViewAdapter(yemekListesi, requireContext())
+                        binding.yemeklerRecyclerView.adapter = adapter
+                        true
+                    }
+                    R.id.sort_point_up -> {
+                       false
+                    }
+                    R.id.sort_point_down -> {
+                        false
+                    }
+                    else -> false
+                }
+            }
+
+            popupMenu.show()
         }
 
 

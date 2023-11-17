@@ -34,9 +34,12 @@ class BoardingFragment : Fragment() {
                 fragmentList
             )
         val viewPager = binding.boardingViewPager
+        viewPager.isUserInputEnabled=false
         viewPager.adapter = adapter
         val indicator = binding.circleIndicator
         indicator.setViewPager(viewPager)
+
+
 
         binding.nextButton.setOnClickListener {
 

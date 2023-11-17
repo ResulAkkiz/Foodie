@@ -20,7 +20,7 @@ class HomeFragmentViewModel @Inject constructor(private var foodieRepository: Fo
         getYemekler()
     }
 
-    fun getYemekler() {
+    private fun getYemekler() {
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 yemekList.value = foodieRepository.getYemekler()
@@ -30,4 +30,5 @@ class HomeFragmentViewModel @Inject constructor(private var foodieRepository: Fo
 
         }
     }
+
 }
